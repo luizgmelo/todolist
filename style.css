@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    height: 98vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+div.container {
+    background-color: yellow;
+    width: 270px;
+    min-height: 350px;
+    padding: 15px;
+}
+
+h1 {
+    text-decoration: underline;
+    text-align: center;
+    padding: 10px;
+}
+
+.tasks {
+    padding-left: 30px;
+}
+
+div.add-field {
+    width: 280px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;    
+}
+
+div.add-field > input {
+    width: 180px;
+}
+
+div.add-field > button {
+    width: 90px;
+}

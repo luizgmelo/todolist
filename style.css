@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-
 * {
     margin: 0px;
     padding: 0px;
@@ -30,6 +29,10 @@ h1 {
 
 .tasks {
     padding-left: 30px;
+}
+
+.task {
+    padding-left: 5px;
 }
 
 div.add-field {

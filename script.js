@@ -13,11 +13,13 @@ function addTask() {
  
 
   const checkbox = document.createElement("input");
+  checkbox.setAttribute("id", count)
   checkbox.setAttribute("type", "checkbox");
   
   const newTask = document.createElement("label");
+  newTask.setAttribute("for", count)
   newTask.classList = "task"
-  newTask.innerHTML = task.value; 
+  newTask.textContent = task.value; 
 
   listTasks.appendChild(div);
 
@@ -25,6 +27,7 @@ function addTask() {
   div.appendChild(newTask);
 
   task.value = '';
+  count++
 }
 
 addButton.addEventListener("click", addTask);

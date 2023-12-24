@@ -14,14 +14,14 @@ body {
 }
 
 
-div.container {
+.container {
     background-color: yellow;
     width: 270px;
     min-height: 350px;
     padding: 15px;
 }
 
-h1 {
+.title {
     text-decoration: underline;
     text-align: center;
     padding: 10px;
@@ -35,17 +35,17 @@ h1 {
     padding-left: 5px;
 }
 
-div.add-field {
+.field {
     width: 280px;
     padding: 15px;
     display: flex;
     justify-content: space-between;    
 }
 
-div.add-field > input {
+.field #task {
     width: 180px;
 }
 
-div.add-field > button {
+.field .btn {
     width: 90px;
 }

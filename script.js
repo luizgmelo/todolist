@@ -1,16 +1,17 @@
-const task = document.querySelector("#task");
-const button = document.querySelector("#button");
-const div = document.querySelector("#div-tasks");
+const task = document.querySelector("#inTask");
+const addButton = document.querySelector("#addButton");
+const listTasks = document.querySelector("#listTasks");
 let count = 0; 
 
 function addTask() {
   count++
-  if (task.value == '' || !isNaN(task.value)) {
+  if (task.value === '' || !isNaN(task.value)) {
     alert("Valor inválido, por favor digite apenas palavras")
+    return
   }
 
-  const newDiv = document.createElement("div");
-  newDiv.setAttribute("id", count);
+  const div = document.createElement("div");
+  div.setAttribute("id", count);
  
 
   const checkbox = document.createElement("input");
@@ -20,9 +21,12 @@ function addTask() {
   newTask.classList = "task"
   newTask.innerHTML = task.value; 
 
-  div.appendChild(newDiv);
-  newDiv.appendChild(checkbox);
-  newDiv.appendChild(newTask);
+  listTasks.appendChild(div);
+
+  div.appendChild(checkbox);
+  div.appendChild(newTask);
+
+  task.value = '';
 }
 
-button.addEventListener("click", addTask);
+addButton.addEventListener("click", addTask);

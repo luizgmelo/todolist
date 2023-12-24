@@ -21,10 +21,21 @@ function addTask() {
   newTask.classList = "task"
   newTask.textContent = task.value; 
 
+  const editButton = document.createElement("span");
+  editButton.textContent = "edit"
+  editButton.classList = "material-icons"
+
+  const deleteButton = document.createElement("span");
+  deleteButton.textContent = "delete"
+  deleteButton.classList = "material-icons"
+
+
   listTasks.appendChild(div);
 
   div.appendChild(checkbox);
   div.appendChild(newTask);
+  div.appendChild(editButton);
+  div.appendChild(deleteButton);
 
   task.value = '';
   count++

@@ -4,14 +4,12 @@ const listTasks = document.querySelector("#listTasks");
 let count = 0; 
 
 function addTask() {
-  count++
   if (task.value === '' || !isNaN(task.value)) {
     alert("Valor inválido, por favor digite apenas palavras")
     return
   }
 
   const div = document.createElement("div");
-  div.setAttribute("id", count);
  
 
   const checkbox = document.createElement("input");

@@ -1,0 +1,26 @@
+.container {
+  position: relative;
+  width: 100%;
+
+  input {
+    font-family: var(--text);
+    font-weight: 500;
+    font-size: 16px;
+    height: 38px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--purple);
+    width: 100%;
+    color: #c3c1e5;
+  }
+}
+
+.icon {
+  font-size: 22px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--purple);
+}

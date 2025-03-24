@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 520px;
+  padding-top: 30px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(108, 99, 255, 0.5);
+  cursor: pointer;
+}
+
+.info {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+
+  input {
+    display: none;
+  }
+
+  input + label::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 16px;
+    vertical-align: middle;
+    background-image: url("../../assets/check-off.svg");
+    background-size: contain;
+  }
+
+  input:checked + label::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url("../../assets/check-on.png");
+    background-size: contain;
+  }
+
+  input:checked + label {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  label {
+    font-size: 16px;
+    font-family: var(--title);
+    color: var(--black);
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+}
+
+.editIcon:hover {
+  color: var(--purple);
+}
+
+.deleteIcon:hover {
+  color: var(--danger);
+}

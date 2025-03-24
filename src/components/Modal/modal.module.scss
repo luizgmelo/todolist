@@ -1,0 +1,52 @@
+.background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--white);
+  color: var(--black);
+  width: 500px;
+  height: 250px;
+  border-radius: 15px;
+  padding: 18px 30px;
+
+  h2 {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+  }
+}
+
+.actions {
+  button {
+    font-size: 18px;
+    font-family: var(--title);
+    text-transform: uppercase;
+    background-color: var(--purple);
+    border: none;
+    width: 100px;
+    height: 40px;
+    border: 1px solid var(--purple);
+    border-radius: 5px;
+    color: var(--white);
+    cursor: pointer;
+  }
+
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+}
+
+.btnCancel {
+  background-color: transparent !important;
+  color: var(--purple) !important;
+}

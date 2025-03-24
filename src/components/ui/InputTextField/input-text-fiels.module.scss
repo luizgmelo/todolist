@@ -11,7 +11,13 @@
     border-radius: 5px;
     border: 1px solid var(--purple);
     width: 100%;
-    color: #c3c1e5;
+    color: var(--purple);
+    outline: none;
+  }
+
+  input:focus {
+    border: 1px solid var(--purple);
+    box-shadow: 1px 1px 5px var(--purple-dark);
   }
 }
 

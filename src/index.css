@@ -10,8 +10,10 @@
   --text: "Inter", sans-serif;
 
   --purple: #6c63ff;
+  --purple-dark: #534cc2;
   --black: #252525;
   --white: #f7f7f7;
+  --danger: #e50000;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

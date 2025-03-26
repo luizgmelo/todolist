@@ -5,6 +5,7 @@ import InputTextField from "./components/ui/InputTextField";
 import Modal from "./components/Modal";
 import { useState } from "react";
 import TaskType from "./types/TaskType";
+import Empty from "./components/Empty";
 
 export default function App() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -13,6 +14,23 @@ export default function App() {
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
+
+  const isEmpty = (tasks: TaskType[]) => {
+    return tasks === undefined || tasks.length == 0;
+  };
+
+  const loadTasks = () => {
+    return tasks.map((task) => (
+      <Task
+        id={task.id}
+        title={task.title}
+        isCompleted={task.isCompleted}
+        onToggle={toggleTask}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+      />
+    ));
+  };
 
   const handleCreate = (inputValue: string) => {
     if (inputValue === "" || inputValue === undefined) {
@@ -98,16 +116,7 @@ export default function App() {
       </div>
 
       <div className={styles.tasks}>
-        {tasks.map((task) => (
-          <Task
-            id={task.id}
-            title={task.title}
-            isCompleted={task.isCompleted}
-            onToggle={toggleTask}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
-        ))}
+        {isEmpty(tasks) ? <Empty /> : loadTasks()}
       </div>
 
       <div className={styles.addTaskButton}>

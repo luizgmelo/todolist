@@ -3,18 +3,27 @@ import styles from "./app.module.scss";
 import Task from "./components/Task";
 import InputTextField from "./components/ui/InputTextField";
 import Modal from "./components/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskType from "./types/TaskType";
 import Empty from "./components/Empty";
 
 export default function App() {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const getLocalStorage = () => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  };
+
+  const [tasks, setTasks] = useState<TaskType[]>(getLocalStorage);
   const [idCounter, setId] = useState<number>(0);
   const [inputSearchValue, setInputSearchValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [filter, setFilter] = useState<string>("all");
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const isEmpty = (tasks: TaskType[]) => {
     return tasks === undefined || tasks.length == 0;

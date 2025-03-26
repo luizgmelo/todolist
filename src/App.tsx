@@ -14,13 +14,20 @@ export default function App() {
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
+  const [filter, setFilter] = useState<string>("all");
 
   const isEmpty = (tasks: TaskType[]) => {
     return tasks === undefined || tasks.length == 0;
   };
 
   const loadTasks = () => {
-    return tasks.map((task) => (
+    const filteredTasks = tasks.filter((task) => {
+      if (filter === "complete") return task.isCompleted;
+      if (filter === "incomplete") return !task.isCompleted;
+      return true;
+    });
+
+    return filteredTasks.map((task) => (
       <Task
         id={task.id}
         title={task.title}
@@ -106,10 +113,10 @@ export default function App() {
           onChange={setInputSearchValue}
         />
 
-        <select name="" id="">
-          <option value="">All</option>
-          <option value="">Complete</option>
-          <option value="">Incomplete</option>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="complete">Complete</option>
+          <option value="incomplete">Incomplete</option>
         </select>
 
         <MoonOutlined className={styles.icon} />

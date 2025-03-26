@@ -20,7 +20,7 @@ export default function App() {
 
   const [tasks, setTasks] = useState<TaskType[]>(getLocalStorage);
   const [nextId, setNextId] = useState<number>(getNextId);
-  const [inputSearchValue, setInputSearchValue] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
@@ -36,9 +36,16 @@ export default function App() {
 
   const loadTasks = () => {
     const filteredTasks = tasks.filter((task) => {
-      if (filter === "complete") return task.isCompleted;
-      if (filter === "incomplete") return !task.isCompleted;
-      return true;
+      const statusMatches =
+        filter === "all" ||
+        (filter === "complete" && task.isCompleted) ||
+        (filter === "incomplete" && !task.isCompleted);
+
+      const searchMatches =
+        searchTerm === '' ||
+        task.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return statusMatches && searchMatches;
     });
 
     return filteredTasks.map((task) => (
@@ -122,8 +129,8 @@ export default function App() {
         <InputTextField
           placeholder={"Search note..."}
           isSearch
-          value={inputSearchValue}
-          onChange={setInputSearchValue}
+          value={searchTerm}
+          onChange={setSearchTerm}
         />
 
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>

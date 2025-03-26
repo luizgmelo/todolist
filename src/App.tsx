@@ -13,8 +13,13 @@ export default function App() {
     return savedTasks ? JSON.parse(savedTasks) : [];
   };
 
+  const getNextId = () => {
+    const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0)
+    return maxId + 1;
+  }
+
   const [tasks, setTasks] = useState<TaskType[]>(getLocalStorage);
-  const [idCounter, setId] = useState<number>(0);
+  const [nextId, setNextId] = useState<number>(getNextId);
   const [inputSearchValue, setInputSearchValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
@@ -53,10 +58,8 @@ export default function App() {
       return;
     }
 
-    setId((idCounter) => ++idCounter);
-
     const newTask = {
-      id: idCounter.toString(),
+      id: nextId,
       title: inputValue,
       isCompleted: false,
       onToggle: toggleTask,
@@ -65,6 +68,7 @@ export default function App() {
     };
 
     setTasks((prevTasks) => [...prevTasks, newTask]);
+    setNextId(nextId + 1);
 
     closeModal();
   };
@@ -81,11 +85,11 @@ export default function App() {
     closeModal();
   };
 
-  const handleDelete = (taskId: string) => {
+  const handleDelete = (taskId: number) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
-  const toggleTask = (taskId: string) => {
+  const toggleTask = (taskId: number) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
@@ -93,7 +97,7 @@ export default function App() {
     );
   };
 
-  const handleEdit = (taskId: string) => {
+  const handleEdit = (taskId: number) => {
     const taskToEdit = tasks.find((task) => task.id === taskId);
     if (taskToEdit) {
       setEditingTask(taskToEdit);

@@ -8,6 +8,7 @@ export default function Task({
   isCompleted,
   onToggle,
   onDelete,
+  onEdit,
 }: ITask) {
   return (
     <div className={styles.container}>
@@ -21,7 +22,7 @@ export default function Task({
         <label htmlFor={`checkbox-${id}`}>{title}</label>
       </div>
       <div className={styles.actions}>
-        <EditOutlined className={styles.editIcon} />
+        <EditOutlined className={styles.editIcon} onClick={() => onEdit(id)} />
         <DeleteOutlined
           className={styles.deleteIcon}
           onClick={() => onDelete(id)}

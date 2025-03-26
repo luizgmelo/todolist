@@ -8,14 +8,46 @@ import TaskType from "./types/TaskType";
 
 export default function App() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [idCounter, setId] = useState<number>(0);
+  const [inputSearchValue, setInputSearchValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
+  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
 
-  const createTask = (newTask: TaskType) => {
+  const handleCreate = (inputValue: string) => {
+    if (inputValue === "" || inputValue === undefined) {
+      return;
+    }
+
+    setId((idCounter) => ++idCounter);
+
+    const newTask = {
+      id: idCounter.toString(),
+      title: inputValue,
+      isCompleted: false,
+      onToggle: toggleTask,
+      onDelete: handleDelete,
+      onEdit: openModal,
+    };
+
     setTasks((prevTasks) => [...prevTasks, newTask]);
+
+    closeModal();
   };
 
-  const deleteTask = (taskId: string) => {
+  const handleUpdate = (inputValue: string) => {
+    if (!editingTask || inputValue === "" || inputValue === undefined) return;
+
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === editingTask.id ? { ...task, title: inputValue } : task
+      )
+    );
+
+    closeModal();
+  };
+
+  const handleDelete = (taskId: string) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
@@ -27,6 +59,24 @@ export default function App() {
     );
   };
 
+  const handleEdit = (taskId: string) => {
+    const taskToEdit = tasks.find((task) => task.id === taskId);
+    if (taskToEdit) {
+      setEditingTask(taskToEdit);
+      setInputValue(taskToEdit.title);
+      setOpen(true);
+    }
+  };
+
+  const openModal = () => {
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setInputValue("");
+    setOpen(false);
+  };
+
   return (
     <main className={styles.container}>
       <h1>TODO LIST</h1>
@@ -34,8 +84,8 @@ export default function App() {
         <InputTextField
           placeholder={"Search note..."}
           isSearch
-          value={inputValue}
-          onChange={setInputValue}
+          value={inputSearchValue}
+          onChange={setInputSearchValue}
         />
 
         <select name="" id="">
@@ -54,25 +104,27 @@ export default function App() {
             title={task.title}
             isCompleted={task.isCompleted}
             onToggle={toggleTask}
-            onDelete={deleteTask}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
           />
         ))}
       </div>
 
       <div className={styles.addTaskButton}>
         <button onClick={() => setOpen(!open)}>
-          <PlusOutlined />
+          <PlusOutlined onClick={() => setEditingTask(null)} />
         </button>
       </div>
 
-      <Modal
-        title="NEW NOTE"
-        isOpen={open}
-        setOpen={setOpen}
-        createTask={createTask}
-        onToggle={toggleTask}
-        onDelete={deleteTask}
-      />
+      {open && (
+        <Modal
+          title={editingTask ? "EDIT NOTE" : "NEW NOTE"}
+          onSubmit={editingTask ? handleUpdate : handleCreate}
+          input={inputValue}
+          onChange={setInputValue}
+          onClose={closeModal}
+        />
+      )}
     </main>
   );
 }

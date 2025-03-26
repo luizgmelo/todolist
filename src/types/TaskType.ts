@@ -4,4 +4,5 @@ export default interface TaskType {
   isCompleted: boolean;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
+  onEdit: (taskId: string) => void;
 }

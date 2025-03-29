@@ -9,15 +9,16 @@
     height: 38px;
     padding: 10px 20px;
     border-radius: 5px;
-    border: 1px solid var(--purple);
+    border: 1px solid var(--border-color);
     width: 100%;
-    color: var(--purple);
+    background-color: var(--background-color);
+    color: var(--input-text-color);
     outline: none;
   }
 
   input:focus {
-    border: 1px solid var(--purple);
-    box-shadow: 1px 1px 5px var(--purple-dark);
+    border: 1px solid var(--border-color);
+    box-shadow: 1px 1px 5px var(--border-color);
   }
 }
 
@@ -28,5 +29,5 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: var(--purple);
+  color: var(--icon-color);
 }

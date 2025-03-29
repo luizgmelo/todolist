@@ -1,4 +1,4 @@
-import { MoonOutlined, PlusOutlined } from "@ant-design/icons";
+import { MoonOutlined, PlusOutlined, SunOutlined } from "@ant-design/icons";
 import styles from "./app.module.scss";
 import Task from "./components/Task";
 import InputTextField from "./components/ui/InputTextField";
@@ -6,6 +6,7 @@ import Modal from "./components/Modal";
 import { useEffect, useState } from "react";
 import TaskType from "./types/TaskType";
 import Empty from "./components/Empty";
+import { useTheme } from "./contexts/ThemeContext";
 
 export default function App() {
   const getLocalStorage = () => {
@@ -25,6 +26,7 @@ export default function App() {
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [filter, setFilter] = useState<string>("all");
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -139,11 +141,16 @@ export default function App() {
           <option value="incomplete">Incomplete</option>
         </select>
 
-        <MoonOutlined className={styles.icon} />
+        {
+          theme === 'dark' ?
+            <SunOutlined className={styles.icon} onClick={toggleTheme} />
+            :
+            <MoonOutlined className={styles.icon} onClick={toggleTheme} />
+        }
       </div>
 
       <div className={styles.tasks}>
-        {isEmpty(tasks) ? <Empty /> : loadTasks()}
+        {isEmpty(tasks) ? <Empty theme={theme} /> : loadTasks()}
       </div>
 
       <div className={styles.addTaskButton}>

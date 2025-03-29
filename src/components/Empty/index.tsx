@@ -1,10 +1,15 @@
-import empty from "../../assets/empty.svg";
+import emptyLightMode from "../../assets/empty.svg";
+import emptyDarkMode from "../../assets/empty-black.svg";
 import style from "./empty.module.scss";
 
-export default function Empty() {
+interface IEmpty {
+  theme: 'light' | 'dark'
+}
+
+export default function Empty({ theme }: IEmpty) {
   return (
     <div className={style.container}>
-      <img src={empty} alt="empty" />
+      <img src={theme === 'light' ? emptyLightMode : emptyDarkMode} alt="empty" />
       <p>Empty...</p>
     </div>
   );

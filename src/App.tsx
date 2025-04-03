@@ -6,14 +6,15 @@ import Modal from "./components/Modal";
 import { useEffect, useState } from "react";
 import TaskType from "./types/TaskType";
 import Empty from "./components/Empty";
+<<<<<<< Updated upstream
 import { useTheme } from "./contexts/ThemeContext";
+=======
+import { listTasks } from './services/taskService.ts';
+>>>>>>> Stashed changes
 
 export default function App() {
-  const getLocalStorage = () => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  };
 
+<<<<<<< Updated upstream
   const getNextId = () => {
     const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0)
     return maxId + 1;
@@ -22,6 +23,11 @@ export default function App() {
   const [tasks, setTasks] = useState<TaskType[]>(getLocalStorage);
   const [nextId, setNextId] = useState<number>(getNextId);
   const [searchTerm, setSearchTerm] = useState<string>("");
+=======
+  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [idCounter, setId] = useState<number>(0);
+  const [inputSearchValue, setInputSearchValue] = useState<string>("");
+>>>>>>> Stashed changes
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
@@ -29,8 +35,10 @@ export default function App() {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    listTasks()
+      .then(setTasks)
+      .catch(error => console.error("Erro ao buscar tarefas", error));
+  }, [])
 
   const isEmpty = (tasks: TaskType[]) => {
     return tasks === undefined || tasks.length == 0;

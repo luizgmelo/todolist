@@ -6,28 +6,19 @@ import Modal from "./components/Modal";
 import { useEffect, useState } from "react";
 import TaskType from "./types/TaskType";
 import Empty from "./components/Empty";
-<<<<<<< Updated upstream
 import { useTheme } from "./contexts/ThemeContext";
-=======
-import { listTasks } from './services/taskService.ts';
->>>>>>> Stashed changes
+import { listTasks, createTask, updateTask, deleteTask } from './services/taskService.ts';
 
 export default function App() {
 
-<<<<<<< Updated upstream
   const getNextId = () => {
     const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0)
     return maxId + 1;
   }
 
-  const [tasks, setTasks] = useState<TaskType[]>(getLocalStorage);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
   const [nextId, setNextId] = useState<number>(getNextId);
   const [searchTerm, setSearchTerm] = useState<string>("");
-=======
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [idCounter, setId] = useState<number>(0);
-  const [inputSearchValue, setInputSearchValue] = useState<string>("");
->>>>>>> Stashed changes
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
@@ -37,8 +28,8 @@ export default function App() {
   useEffect(() => {
     listTasks()
       .then(setTasks)
-      .catch(error => console.error("Erro ao buscar tarefas", error));
-  }, [])
+      .catch(error => console.error("Error: Searching Tasks", error));
+  }, [tasks])
 
   const isEmpty = (tasks: TaskType[]) => {
     return tasks === undefined || tasks.length == 0;
@@ -60,6 +51,7 @@ export default function App() {
 
     return filteredTasks.map((task) => (
       <Task
+        key={task.id}
         id={task.id}
         title={task.title}
         isCompleted={task.isCompleted}
@@ -84,26 +76,22 @@ export default function App() {
       onEdit: openModal,
     };
 
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+    createTask(newTask);
     setNextId(nextId + 1);
 
     closeModal();
   };
 
-  const handleUpdate = (inputValue: string) => {
-    if (!editingTask || inputValue === "" || inputValue === undefined) return;
+  const handleUpdate = (newTitle: string) => {
+    if (!editingTask || newTitle === "" || newTitle === undefined) return;
 
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === editingTask.id ? { ...task, title: inputValue } : task
-      )
-    );
+    updateTask(editingTask.id, newTitle);
 
     closeModal();
   };
 
   const handleDelete = (taskId: number) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    deleteTask(taskId);
   };
 
   const toggleTask = (taskId: number) => {

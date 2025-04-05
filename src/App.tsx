@@ -7,19 +7,23 @@ import { useEffect, useState } from "react";
 import TaskType from "./types/TaskType";
 import Empty from "./components/Empty";
 import { useTheme } from "./contexts/ThemeContext";
-import { listTasks, createTask, updateTask, deleteTask } from './services/taskService.ts';
+import {
+  listTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+} from "./services/taskService.ts";
 
 export default function App() {
-
   const getNextId = () => {
-    const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0)
+    const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0);
     return maxId + 1;
-  }
+  };
 
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [nextId, setNextId] = useState<number>(getNextId);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [inputValue, setInputValue] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [filter, setFilter] = useState<string>("all");
@@ -28,8 +32,8 @@ export default function App() {
   useEffect(() => {
     listTasks()
       .then(setTasks)
-      .catch(error => console.error("Error: Searching Tasks", error));
-  }, [tasks])
+      .catch((error) => console.error("Error: Searching Tasks", error));
+  }, [tasks]);
 
   const isEmpty = (tasks: TaskType[]) => {
     return tasks === undefined || tasks.length == 0;
@@ -43,7 +47,7 @@ export default function App() {
         (filter === "incomplete" && !task.isCompleted);
 
       const searchMatches =
-        searchTerm === '' ||
+        searchTerm === "" ||
         task.title.toLowerCase().includes(searchTerm.toLowerCase());
 
       return statusMatches && searchMatches;
@@ -62,61 +66,46 @@ export default function App() {
     ));
   };
 
-  const handleCreate = (inputValue: string) => {
-    if (inputValue === "" || inputValue === undefined) {
+  const handleCreate = (title: string) => {
+    if (title === "" || title === undefined) {
       return;
     }
 
-    const newTask = {
-      id: nextId,
-      title: inputValue,
-      isCompleted: false,
-      onToggle: toggleTask,
-      onDelete: handleDelete,
-      onEdit: openModal,
-    };
-
-    createTask(newTask);
+    createTask(title);
     setNextId(nextId + 1);
 
     closeModal();
   };
 
-  const handleUpdate = (newTitle: string) => {
-    if (!editingTask || newTitle === "" || newTitle === undefined) return;
+  const handleUpdate = (newTitle?: string, isCompleted?: boolean) => {
+    if (!editingTask) {
+      return;
+    }
 
-    updateTask(editingTask.id, newTitle);
+    updateTask(editingTask.id, newTitle, isCompleted);
 
     closeModal();
+  };
+
+  const toggleTask = (taskId: number, isCompleted: boolean) => {
+    updateTask(taskId, "", isCompleted);
   };
 
   const handleDelete = (taskId: number) => {
     deleteTask(taskId);
   };
 
-  const toggleTask = (taskId: number) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
-      )
-    );
-  };
-
   const handleEdit = (taskId: number) => {
     const taskToEdit = tasks.find((task) => task.id === taskId);
     if (taskToEdit) {
       setEditingTask(taskToEdit);
-      setInputValue(taskToEdit.title);
+      setTitle(taskToEdit.title);
       setOpen(true);
     }
   };
 
-  const openModal = () => {
-    setOpen(true);
-  };
-
   const closeModal = () => {
-    setInputValue("");
+    setTitle("");
     setOpen(false);
   };
 
@@ -137,12 +126,11 @@ export default function App() {
           <option value="incomplete">Incomplete</option>
         </select>
 
-        {
-          theme === 'dark' ?
-            <SunOutlined className={styles.icon} onClick={toggleTheme} />
-            :
-            <MoonOutlined className={styles.icon} onClick={toggleTheme} />
-        }
+        {theme === "dark" ? (
+          <SunOutlined className={styles.icon} onClick={toggleTheme} />
+        ) : (
+          <MoonOutlined className={styles.icon} onClick={toggleTheme} />
+        )}
       </div>
 
       <div className={styles.tasks}>
@@ -159,8 +147,8 @@ export default function App() {
         <Modal
           title={editingTask ? "EDIT NOTE" : "NEW NOTE"}
           onSubmit={editingTask ? handleUpdate : handleCreate}
-          input={inputValue}
-          onChange={setInputValue}
+          input={title}
+          onChange={setTitle}
           onClose={closeModal}
         />
       )}

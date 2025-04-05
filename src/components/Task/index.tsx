@@ -17,7 +17,7 @@ export default function Task({
           id={`checkbox-${id}`}
           type="checkbox"
           checked={isCompleted}
-          onChange={() => onToggle(id)}
+          onChange={() => onToggle(id, !isCompleted)}
         />
         <label htmlFor={`checkbox-${id}`}>{title}</label>
       </div>
